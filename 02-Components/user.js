@@ -1,4 +1,4 @@
-'use strict';
+
 
 /* eslint-env browser */
 /* globals Zinc */
@@ -18,4 +18,11 @@
         },
         email: 'jack.burton@example.com'
     };
+    Zinc.registerComponent('user-item', 'user', userData);
+
+    function init () {
+        
+    };
+
+    document.addEventListener('DOMContentLoaded', init);
 })();

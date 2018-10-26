@@ -1,39 +1,29 @@
-'use strict';
 
-/* eslint-env browser */
 
 const Zinc = {};
 
 (() => {
-    const userData = {
-        picture: {
-            thumbnail: 'https://f4.bcbits.com/img/0001142378_10.jpg'
-        },
-        name: {
-            first: 'Jack',
-            last: 'Burton'
-        },
-        location: {
-            city: 'San Francisco',
-            state: 'CA'
-        },
-        email: 'jack.burton@example.com'
-    };
-
-    function renderComponent(element, content, userData) {
-        return fetch(`${content}.html`)
+    function renderTemplate(templateFile, dataObject) {
+        return fetch(`${templateFile}.html`)
             .then(res => res.text())
-            .then(text =>{ 
+            .then(text => { 
                 return text.replace(/\{\{\s*(.+?)\s*\}\}/g,  (matches, p1) => 
-                    p1.split('.').reduce((acc, cur) => acc[cur], userData))
-            })
-            .then(template => {
-                document.querySelector(element).insertAdjacentHTML("beforeend", template)
+                    p1.split('.').reduce((acc, cur) => acc[cur], dataObject))
             })
     }
 
+    Zinc.registerComponent = function (elementName, templateFile, dataObject) {
+        let element = document.querySelectorAll(elementName);
+        for (let i = 0; i < element.length; i++) {
+            renderTemplate(templateFile, dataObject)
+                .then((template) => {
+                    element[i].insertAdjacentHTML("beforeend", template);
+                })
+        }
+    }
+
     function init() {
-        renderComponent('user-item', 'user', userData);
+        
     }
 
     document.addEventListener('DOMContentLoaded', init);
