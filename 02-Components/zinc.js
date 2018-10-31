@@ -12,14 +12,23 @@ const Zinc = {};
             })
     }
 
+    function renderComponent(elementName, templateFile, dataObject) {
+        let element = document.querySelector(elementName);
+        renderTemplate(templateFile, dataObject)
+            .then((template) => {
+                console.log(element)
+                element.insertAdjacentHTML("beforeend", template);
+            });
+    }
+
     Zinc.registerComponent = function (elementName, templateFile, dataObject) {
-        let element = document.querySelectorAll(elementName);
-        for (let i = 0; i < element.length; i++) {
-            renderTemplate(templateFile, dataObject)
-                .then((template) => {
-                    element[i].insertAdjacentHTML("beforeend", template);
-                })
-        }
+        Zinc.components = {
+            elementName,
+            templateFile,
+            dataObject
+        };
+
+        renderComponent(elementName, templateFile, dataObject);
     }
 
     function init() {

@@ -4,24 +4,18 @@
 /* globals Zinc */
 
 (() => {
-    const userData = {
-        picture: {
-            thumbnail: 'https://f4.bcbits.com/img/0001142378_10.jpg'
-        },
-        name: {
-            first: 'Jack',
-            last: 'Burton'
-        },
-        location: {
-            city: 'San Francisco',
-            state: 'CA'
-        },
-        email: 'jack.burton@example.com'
+    function userData () {
+        return fetch('https://randomuser.me/api/?results=5')
+            .then(res => res.json())
+            .then(json => {
+                for (let i = 0; i < json.results.length; i++)
+                Zinc.registerComponent('user-item', 'user', json.results[i])
+            })
     };
-    Zinc.registerComponent('user-item', 'user', userData);
+
 
     function init () {
-        
+        userData();
     };
 
     document.addEventListener('DOMContentLoaded', init);
